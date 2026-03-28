@@ -163,7 +163,7 @@ export default function WhyChooseUs() {
             "{testimonials[index].text}"
           </p>
           <h4 className="mt-4 font-semibold text-blue-900">
-            {testimonials[index].name}
+            {"\"" + testimonials[index].text + "\""}
           </h4>
         </div>
 
