@@ -77,7 +77,7 @@ export default function WhyChooseUs() {
     }, 3000);
 
     return () => clearInterval(slider);
-  }, []);
+  }, [testimonials.length]); // ✅ warning fix
 
   return (
     <section className="py-16 bg-linear-to-br from-blue-50 via-white to-teal-50">
@@ -160,10 +160,10 @@ export default function WhyChooseUs() {
         {/* 💬 TESTIMONIAL SLIDER */}
         <div className="mt-12 max-w-xl mx-auto text-center bg-white p-6 rounded-2xl shadow-md">
           <p className="text-gray-700 italic">
-            "{testimonials[index].text}"
+            &quot;{testimonials[index].text}&quot;
           </p>
           <h4 className="mt-4 font-semibold text-blue-900">
-            {"\"" + testimonials[index].text + "\""}
+            {testimonials[index].name}
           </h4>
         </div>
 
