@@ -69,7 +69,7 @@ export default function Navbar() {
 
       <div className="flex items-center gap-3">
         <Phone size={14} className="text-blue-600" />
-        <span>+91 9876543210</span>
+        <span>+91 7572055787</span>
       </div>
 
       <div className="flex items-center gap-1 ml-4">
@@ -130,7 +130,7 @@ export default function Navbar() {
 
           {/* LOGO */}
           <Link href="/" className="text-2xl font-bold text-blue-700">
-            BloodCare <span className="text-teal-600">Lab</span>
+            CBCblood TEST <span className="text-teal-600">Lab</span>
           </Link>
 
           {/* MOBILE BTN */}
