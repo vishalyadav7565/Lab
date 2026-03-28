@@ -8,7 +8,7 @@ export default function About() {
       <Navbar />
 
       {/* HERO */}
-      <section className="bg-gradient-to-br from-blue-50 to-white py-20">
+      <section className="bg-linear-to-br from-blue-50 to-white py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-blue-900">
             About Our Diagnostic Lab

@@ -9,7 +9,7 @@ export default function HomeCollection() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-50 via-white to-teal-50">
+    <section className="py-16 bg-linear-to-br from-blue-50 via-white to-teal-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
 
         <div className="grid md:grid-cols-2 gap-10 items-center">

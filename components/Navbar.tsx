@@ -15,7 +15,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location, setLocation] = useState("Detecting...");
   const [query, setQuery] = useState("");
-  const [filtered, setFiltered] = useState([]);
+  const [filtered, setFiltered] = useState<string[]>([]);
 
   const tests = [
     "CBC Test",
@@ -45,7 +45,7 @@ export default function Navbar() {
   }, []);
 
   /* ===== SEARCH ===== */
-  const handleSearch = (value) => {
+  const handleSearch = (value: string) => {
     setQuery(value);
 
     if (!value) return setFiltered([]);

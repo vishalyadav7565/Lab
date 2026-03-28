@@ -5,7 +5,7 @@ import { ShieldCheck, Home, Clock, FileText, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
 /* 🔢 COUNTER COMPONENT */
-function Counter({ target }) {
+function Counter({ target }: { target: string }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function WhyChooseUs() {
   }, []);
 
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-50 via-white to-teal-50">
+    <section className="py-16 bg-linear-to-br from-blue-50 via-white to-teal-50">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* HEADER */}

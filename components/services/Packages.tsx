@@ -5,7 +5,7 @@ import { HeartPulse, Activity, ShieldPlus, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Packages() {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState<typeof packages>([]);
 
   const packages = [
     {
@@ -38,7 +38,7 @@ export default function Packages() {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-50 via-white to-teal-50">
+    <section className="py-16 bg-linear-to-br from-blue-50 via-white to-teal-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
 
         {/* HEADER */}
