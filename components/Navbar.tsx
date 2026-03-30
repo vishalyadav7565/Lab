@@ -1,7 +1,8 @@
 "use client";
-
+import Logo from "../public/logo/CBC blood tests.png";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Phone,
   MapPin,
@@ -124,16 +125,16 @@ export default function Navbar() {
 </div>
 
       {/* ================= NAVBAR ================= */}
-      <nav className="bg-white sticky top-0 z-50 px-6 py-3 shadow-sm border-b border-blue-100">
-
-        <div className="flex items-center justify-between">
-
+       <nav className="bg-white sticky top-0 z-50 h-16 px-6 flex items-center shadow-sm border-b border-blue-100">
+        
+        <div className="flex items-center justify-between w-full">
+          
           {/* LOGO */}
           <Link href="/" className="text-2xl font-bold text-blue-700">
-            CBCblood TEST <span className="text-teal-600">Lab</span>
+            BloodCare <span className="text-teal-600">Lab</span>
           </Link>
 
-          {/* MOBILE BTN */}
+          {/* MOBILE BUTTON */}
           <button
             className="md:hidden text-blue-700"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -141,48 +142,63 @@ export default function Navbar() {
             {mobileOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
 
-          {/* MENU */}
+          {/* DESKTOP MENU */}
           <div className="hidden md:flex items-center space-x-8 text-blue-900 font-semibold">
-
-            <Link href="/about" className="hover:text-teal-600">
+            
+            <Link href="/about" className="hover:text-teal-600 transition">
               About
             </Link>
 
-            <Link href="/blood-tests" className="hover:text-teal-600">
+            <Link href="/blood-tests" className="hover:text-teal-600 transition">
               Blood Tests
             </Link>
 
-            <Link href="/packages" className="hover:text-teal-600">
+            <Link href="/packages" className="hover:text-teal-600 transition">
               Packages
             </Link>
 
-            <Link href="/home-collection" className="hover:text-teal-600">
+            <Link href="/home-collection" className="hover:text-teal-600 transition">
               Home Collection
             </Link>
 
-            <Link href="/contact" className="hover:text-teal-600">
+            <Link href="/contact" className="hover:text-teal-600 transition">
               Contact
             </Link>
 
             <Link href="/login">
-              <User className="w-6 h-6 hover:text-teal-600 cursor-pointer" />
+              <User className="w-6 h-6 hover:text-teal-600 cursor-pointer transition" />
             </Link>
 
           </div>
-
         </div>
 
         {/* MOBILE MENU */}
         {mobileOpen && (
-          <div className="md:hidden flex flex-col gap-4 mt-4 text-blue-900 font-medium">
+          <div className="absolute top-16 left-0 w-full bg-white shadow-md border-t border-blue-100 md:hidden flex flex-col gap-4 px-6 py-4 text-blue-900 font-medium">
+            
+            <Link href="/about" onClick={() => setMobileOpen(false)}>
+              About
+            </Link>
 
-            <Link href="/about">About</Link>
-            <Link href="/blood-tests">Blood Tests</Link>
-            <Link href="/packages">Packages</Link>
-            <Link href="/home-collection">Home Collection</Link>
-            <Link href="/contact">Contact</Link>
+            <Link href="/blood-tests" onClick={() => setMobileOpen(false)}>
+              Blood Tests
+            </Link>
 
-            <Link href="/login">Login</Link>
+            <Link href="/packages" onClick={() => setMobileOpen(false)}>
+              Packages
+            </Link>
+
+            <Link href="/home-collection" onClick={() => setMobileOpen(false)}>
+              Home Collection
+            </Link>
+
+            <Link href="/contact" onClick={() => setMobileOpen(false)}>
+              Contact
+            </Link>
+
+            <Link href="/login" onClick={() => setMobileOpen(false)}>
+              Login
+            </Link>
 
           </div>
         )}
