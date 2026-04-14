@@ -70,7 +70,7 @@ export default function Navbar() {
 
       <div className="flex items-center gap-3">
         <Phone size={14} className="text-blue-600" />
-        <span>+91 9876543210</span>
+        <span>+917572055787</span>
       </div>
 
       <div className="flex items-center gap-1 ml-4">

@@ -5,7 +5,9 @@ export const metadata: Metadata = {
   title: "Lab",
   description: "Healthcare Diagnostic Platform",
 };
-
+<head>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
 export default function RootLayout({
   children,
 }: {
