@@ -19,17 +19,17 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci   # ✅ FIX
 
       - name: Build project
         run: npm run build
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4   # ✅ FINAL FIX
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/
+          local-dir: .next/   # ⚠️ IMPORTANT (Next.js)
           server-dir: /public_html/
           dangerous-clean-slate: true
