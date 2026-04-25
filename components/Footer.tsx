@@ -56,12 +56,12 @@ export default function Footer() {
 
             <div className="flex items-center gap-2">
               <Phone size={16} />
-              <span>+91 9876543210</span>
+              <span>+91 7572055787</span>
             </div>
 
             <div className="flex items-center gap-2">
               <Mail size={16} />
-              <span>lab@email.com</span>
+              <span>info@cbcbloodtest.in</span>
             </div>
 
             <div className="flex items-center gap-2">

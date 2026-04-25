@@ -1,12 +1,7 @@
 import BookingClient from "./BookingClient";
+import { tests } from "@/app/data/tests";
 
-// ✅ SAME IDS (must match tests)
-const tests = [
-  { id: "full-body-essential" },
-  { id: "full-body-advanced" },
-];
-
-// ✅ REQUIRED (STATIC EXPORT FIX)
+// ✅ ALL ROUTES GENERATE
 export function generateStaticParams() {
   return tests.map((t) => ({
     id: t.id,
@@ -14,8 +9,10 @@ export function generateStaticParams() {
 }
 
 // ✅ SERVER COMPONENT
-export default async function Page({ params }: any) {
-  const { id } = await params;
-
-  return <BookingClient testId={id} />;
+export default function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
+  return <BookingClient testId={params.id} />;
 }

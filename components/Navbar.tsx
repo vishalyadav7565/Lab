@@ -116,10 +116,13 @@ export default function Navbar() {
 
     {/* RIGHT: CTA */}
     <div className="w-full md:w-auto flex justify-end">
-      <button className="w-full md:w-auto bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition">
-        Book Test
-      </button>
-    </div>
+  <Link
+    href="/alltestpage"
+    className="w-full md:w-auto bg-blue-600 text-white px-5 py-2 rounded-xl hover:bg-blue-700 transition text-center"
+  >
+    Book Test
+  </Link>
+</div>
 
   </div>
 </div>

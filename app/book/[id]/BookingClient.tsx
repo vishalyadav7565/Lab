@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   GoogleMap,
   Marker,
   useLoadScript,
+  Autocomplete,
 } from "@react-google-maps/api";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { Calendar, Clock, MapPin, Locate } from "lucide-react";
 
 const containerStyle = {
   width: "100%",
-  height: "300px",
+  height: "320px",
 };
 
 export default function BookingClient({ testId }: any) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!,
+    libraries: ["places"],
   });
 
   const today = new Date().toISOString().split("T")[0];
@@ -35,92 +37,100 @@ export default function BookingClient({ testId }: any) {
   });
 
   const [loading, setLoading] = useState(false);
+  const autocompleteRef = useRef<any>(null);
 
-  /* 📍 MAP */
-  const handleDragEnd = async (e: any) => {
-    const lat = e.latLng.lat();
-    const lng = e.latLng.lng();
+  /* 📍 Detect Current Location */
+  const detectLocation = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+
+      setPosition({ lat, lng });
+
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode({ location: { lat, lng } }, (res, status) => {
+        if (status === "OK") {
+          setForm((prev) => ({
+            ...prev,
+            address: res[0]?.formatted_address,
+          }));
+        }
+      });
+    });
+  };
+
+  /* 📍 Autocomplete */
+  const onPlaceChanged = () => {
+    const place = autocompleteRef.current.getPlace();
+    if (!place.geometry) return;
+
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
 
     setPosition({ lat, lng });
 
-    try {
-      const res = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}`
-      );
-      const data = await res.json();
-      const address = data.results?.[0]?.formatted_address;
-
-      setForm((prev) => ({ ...prev, address }));
-    } catch (err) {
-      console.log(err);
-    }
+    setForm((prev) => ({
+      ...prev,
+      address: place.formatted_address,
+    }));
   };
 
-  /* SLOT */
+  /* 📍 Drag Marker */
+  const handleDragEnd = (e: any) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    setPosition({ lat, lng });
+  };
+
   const slotAvailability: any = {
     [today]: [
-      "6:00 AM - 8:00 AM",
-      "8:00 AM - 10:00 AM",
-      "10:00 AM - 12:00 PM",
-      "12:00 PM - 2:00 PM",
+      "6 AM - 8 AM",
+      "8 AM - 10 AM",
+      "10 AM - 12 PM",
+      "12 PM - 2 PM",
     ],
   };
 
   const availableSlots = slotAvailability[form.date] || [];
 
-  /* PAYMENT */
+  /* 💳 PAYMENT */
   const handlePayment = async () => {
     if (!form.name || !form.phone || !form.time) {
-      alert("Please fill required fields");
+      alert("Fill required fields");
       return;
     }
 
     setLoading(true);
 
-    try {
-      const res = await fetch("/api/payment", { method: "POST" });
-      const order = await res.json();
+    const res = await fetch("/api/payment", { method: "POST" });
+    const order = await res.json();
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
-        amount: order.amount,
-        currency: "INR",
-        name: "Lab Test Booking",
-        description: testId,
-        order_id: order.id,
-        handler: function () {
-          alert("✅ Booking Confirmed!");
-        },
-        prefill: {
-          name: form.name,
-          email: form.email,
-          contact: form.phone,
-        },
-        theme: { color: "#4f46e5" },
-      };
+    const rzp = new (window as any).Razorpay({
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
+      amount: order.amount,
+      currency: "INR",
+      name: "Lab Booking",
+      order_id: order.id,
+      handler: () => alert("✅ Booking Confirmed"),
+    });
 
-      const rzp = new (window as any).Razorpay(options);
-      rzp.open();
-    } catch (err) {
-      alert("Payment failed");
-    }
-
+    rzp.open();
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-white to-blue-200 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100 py-12 px-4">
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
 
-        {/* LEFT */}
-        <div className="md:col-span-2 bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/40">
+        {/* LEFT FORM */}
+        <div className="md:col-span-2 bg-white p-8 rounded-3xl shadow-xl border">
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
             Book Your Test
           </h1>
 
-          {/* FORM */}
+          {/* INPUTS */}
           <div className="grid md:grid-cols-2 gap-4">
 
             <input
@@ -147,7 +157,6 @@ export default function BookingClient({ testId }: any) {
               }
             />
 
-            {/* DATE */}
             <div className="relative">
               <Calendar className="icon" />
               <input
@@ -169,8 +178,8 @@ export default function BookingClient({ testId }: any) {
 
           {/* SLOT */}
           <div className="mt-6">
-            <h2 className="font-semibold mb-3 flex items-center gap-2 text-gray-800">
-              <Clock size={18} /> Select Time Slot *
+            <h2 className="section-title">
+              <Clock size={18} /> Select Time Slot
             </h2>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -180,10 +189,8 @@ export default function BookingClient({ testId }: any) {
                   onClick={() =>
                     setForm({ ...form, time: slot })
                   }
-                  className={`p-3 rounded-xl border font-medium transition-all duration-200 ${
-                    form.time === slot
-                      ? "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg scale-105"
-                      : "bg-white text-gray-800 hover:bg-indigo-50 hover:border-indigo-400"
+                  className={`slot ${
+                    form.time === slot ? "active-slot" : ""
                   }`}
                 >
                   {slot}
@@ -194,22 +201,43 @@ export default function BookingClient({ testId }: any) {
 
           {/* ADDRESS */}
           <div className="mt-6">
-            <h2 className="font-semibold mb-3 flex items-center gap-2 text-gray-800">
+            <h2 className="section-title">
               <MapPin size={18} /> Address
             </h2>
 
-            <textarea
-              value={form.address}
-              onChange={(e) =>
-                setForm({ ...form, address: e.target.value })
-              }
-              className="input h-24 resize-none"
-              placeholder="📍 Drag map pin or type your address"
-            />
+            {isLoaded && (
+              <div className="flex gap-2">
+                <Autocomplete
+                  onLoad={(ref) =>
+                    (autocompleteRef.current = ref)
+                  }
+                  onPlaceChanged={onPlaceChanged}
+                >
+                  <input
+                    className="input flex-1"
+                    placeholder="Search address..."
+                    value={form.address}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        address: e.target.value,
+                      })
+                    }
+                  />
+                </Autocomplete>
+
+                <button
+                  onClick={detectLocation}
+                  className="loc-btn"
+                >
+                  <Locate size={18} />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* MAP */}
-          <div className="mt-6 rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
+          <div className="mt-6 rounded-2xl overflow-hidden shadow-md border">
             {!isLoaded ? (
               <p className="p-4 text-gray-500">Loading map...</p>
             ) : (
@@ -229,12 +257,12 @@ export default function BookingClient({ testId }: any) {
 
         </div>
 
-        {/* RIGHT */}
-        <div className="sticky top-10 h-fit">
-          <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6">
+        {/* RIGHT SUMMARY */}
+        <div className="sticky top-10">
+          <div className="bg-white rounded-3xl p-6 shadow-xl border">
 
             <h2 className="text-xl font-semibold mb-4 text-gray-900">
-              Booking Summary
+              Summary
             </h2>
 
             <div className="space-y-2 text-sm text-gray-700">
@@ -258,17 +286,13 @@ export default function BookingClient({ testId }: any) {
 
             <div className="flex justify-between text-lg font-bold">
               <span>Total</span>
-              <span className="text-indigo-600">₹1599</span>
+              <span className="text-blue-600">₹1599</span>
             </div>
 
             <button
               onClick={handlePayment}
               disabled={loading}
-              className={`mt-5 w-full py-3 rounded-xl text-white font-semibold text-lg transition ${
-                loading
-                  ? "bg-gray-400"
-                  : "bg-gradient-to-r from-indigo-600 to-blue-600 hover:shadow-2xl hover:scale-[1.03]"
-              }`}
+              className="pay-btn mt-5"
             >
               {loading ? "Processing..." : "Pay & Book"}
             </button>
@@ -281,18 +305,84 @@ export default function BookingClient({ testId }: any) {
       {/* STYLE */}
       <style jsx>{`
         .input {
-          @apply border border-gray-300 bg-white text-gray-900 
-          p-3 rounded-xl w-full outline-none 
-          focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-          transition shadow-sm;
+          width: 100%;
+          padding: 12px;
+          border-radius: 12px;
+          border: 1px solid #d1d5db;
+          background: white;
+          color: #111827;
+          outline: none;
+          transition: 0.3s;
+        }
+
+        .input::placeholder {
+          color: #6b7280;
+        }
+
+        .input:focus {
+          border-color: #2563eb;
+          box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
         }
 
         .icon {
           position: absolute;
-          top: 50%;
           left: 10px;
+          top: 50%;
           transform: translateY(-50%);
           color: #6b7280;
+        }
+
+        .section-title {
+          display: flex;
+          gap: 8px;
+          font-weight: 600;
+          color: #374151;
+          margin-bottom: 10px;
+        }
+
+        .slot {
+          padding: 12px;
+          border-radius: 12px;
+          border: 1px solid #d1d5db;
+          background: white;
+          color: #111827;
+          transition: 0.3s;
+        }
+
+        .slot:hover {
+          transform: scale(1.05);
+          border-color: #2563eb;
+        }
+
+        .active-slot {
+          background: linear-gradient(to right, #2563eb, #4f46e5);
+          color: white;
+          transform: scale(1.05);
+        }
+
+        .loc-btn {
+          padding: 0 14px;
+          border-radius: 12px;
+          background: #2563eb;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .pay-btn {
+          width: 100%;
+          padding: 14px;
+          border-radius: 12px;
+          background: linear-gradient(to right, #2563eb, #4f46e5);
+          color: white;
+          font-weight: 600;
+          transition: 0.3s;
+        }
+
+        .pay-btn:hover {
+          transform: scale(1.05);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
       `}</style>
     </div>

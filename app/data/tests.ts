@@ -24,10 +24,10 @@ export const tests = [
     ],
   },
   {
-    id: "full-body-advanced",
+    id: "cbc-checkup",
     category: "Full Body Checkups",
-    name: "Full Body Checkup - Advanced",
-    price: 2799,
+    name: "CBC Checkup",
+    price: 1299,
     original: 7708,
     parameters: "100 parameters",
     reportTime: "Reports in 6 hrs",
