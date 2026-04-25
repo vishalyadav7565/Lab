@@ -18,18 +18,25 @@ jobs:
         with:
           node-version: 18
 
+      # ✅ FIXED INSTALL
       - name: Install dependencies
-        run: npm ci   # ✅ FIX
+        run: npm ci --force
 
+      # ✅ BUILD
       - name: Build project
         run: npm run build
 
+      # ✅ EXPORT (VERY IMPORTANT)
+      - name: Export static
+        run: npx next export
+
+      # ✅ DEPLOY
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: .next/   # ⚠️ IMPORTANT (Next.js)
+          local-dir: out/
           server-dir: /public_html/
           dangerous-clean-slate: true

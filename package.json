@@ -13,6 +13,7 @@
     "@google/generative-ai": "^0.24.1",
     "@react-google-maps/api": "^2.20.8",
     "@tailwindcss/typography": "^0.5.19",
+    "autoprefixer": "^10.5.0",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^12.38.0",
     "gray-matter": "^4.0.3",
@@ -22,6 +23,7 @@
     "next-cloudinary": "^6.17.5",
     "nodemailer": "^8.0.5",
     "openai": "^6.34.0",
+    "postcss": "^8.5.10",
     "razorpay": "^2.9.6",
     "react": "19.2.3",
     "react-countup": "^6.5.3",
@@ -39,7 +41,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.2.4",
     "typescript": "^5"
   }
 }
