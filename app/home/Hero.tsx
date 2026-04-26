@@ -73,8 +73,11 @@ export default function Hero() {
           </h1>
 
           <p className="mt-4 text-gray-600 text-base md:text-lg max-w-lg">
-            We deliver excellence in pathology services with strict quality
-            control ensuring accurate and reliable results at affordable prices.
+            WE deliver Excellence in pathology services, accessible to all in need at the right 
+            time at affordable prices . We follow strict quality control at every stage from sample 
+            collection to final reporting to ensure accurate, reliable, and trustworthy lab test 
+            results. 
+
           </p>
 
           {/* 🔍 SEARCH */}
