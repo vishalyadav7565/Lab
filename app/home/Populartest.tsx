@@ -152,36 +152,36 @@ function TestCard({ test, highlight }: any) {
         )}
 
         {/* TITLE */}
-        <h3 className="text-sm font-semibold text-gray-800">
-          {test.name}
-        </h3>
+<h3 className="text-sm font-semibold text-black">
+  {test.name}
+</h3>
 
-        {/* PRICE */}
-        <div className="mt-3 flex items-center gap-2">
-          <span className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">
-            ₹{test.price}
-          </span>
-          <span className="line-through text-xs text-gray-400">
-            ₹{test.original}
-          </span>
-        </div>
+{/* PRICE */}
+<div className="mt-3 flex items-center gap-2">
+  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+    ₹{test.price}
+  </span>
 
-        {/* INFO */}
-        <div className="flex justify-between text-xs text-gray-600 mt-3">
-          <span>{test.parameters}</span>
-          <span>{test.time}</span>
-        </div>
+  <span className="text-sm font-medium text-red-500 line-through">
+    ₹{test.original}
+  </span>
+</div>
 
-        {/* RATING */}
-        <div className="flex items-center gap-2 text-xs mt-3">
-          <span className="text-yellow-500">⭐</span>
-          <span className="text-gray-700">{rating}</span>
-          <span className="text-gray-400">({reviews})</span>
-        </div>
+{/* INFO */}
+<div className="flex justify-between text-xs text-gray-700 mt-3">
+  <span>{test.parameters}</span>
+  <span>{test.time}</span>
+</div>
 
-        {/* DIVIDER */}
-        <div className="h-px bg-gradient-to-r from-sky-200 to-blue-200 my-3"></div>
+{/* RATING */}
+<div className="flex items-center gap-2 text-xs mt-3">
+  <span className="text-yellow-500">⭐</span>
+  <span className="text-gray-800 font-medium">{rating}</span>
+  <span className="text-gray-500">({reviews})</span>
+</div>
 
+{/* DIVIDER */}
+<div className="h-px bg-gradient-to-r from-blue-300 to-indigo-300 my-3"></div>
         {/* INCLUDED */}
         <div className="space-y-1 text-xs text-gray-600">
           {test.includes?.slice(0, 3).map((item: string, i: number) => (
