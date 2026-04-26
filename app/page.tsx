@@ -30,7 +30,7 @@ export default function HomePage() {
       <HomeCollection />
       <OfferPopup/>
 
-      <Footer />
+     
 
       <OfferPopup/>
 

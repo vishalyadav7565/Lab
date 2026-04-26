@@ -24,13 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 4. Build project
+      # 4. Build project (Next.js static export)
       - name: Build project
         run: npm run build
         env:
           NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
 
-      # 5. Deploy to Hostinger
+      # 5. Deploy via FTP (ONLY CHANGED FILES 🚀)
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -39,7 +39,11 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          security: loose   # 🔥 use loose (better for Hostinger)
+          security: loose
           local-dir: out/
           server-dir: /public_html/
-          dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.next/**
