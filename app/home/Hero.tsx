@@ -69,8 +69,7 @@ export default function Hero() {
           </p>
 
           <h1 className="text-3xl md:text-5xl font-bold text-blue-900 leading-tight max-w-xl">
-            Book Lab Tests Easily,
-            Get Accurate Reports Fast
+            QHD Path Lab – Book Lab Tests Easily & Get Accurate Results
           </h1>
 
           <p className="mt-4 text-gray-600 text-base md:text-lg max-w-lg">
