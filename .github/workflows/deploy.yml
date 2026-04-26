@@ -25,6 +25,8 @@ jobs:
       # ✅ BUILD
       - name: Build project
         run: npm run build
+        env:
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
 
       # ✅ EXPORT (VERY IMPORTANT)
       - name: Export static
