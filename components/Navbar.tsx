@@ -128,7 +128,7 @@ export default function Navbar() {
 </div>
 
       {/* ================= NAVBAR ================= */}
-       <nav className="bg-sky-400 sticky top-0 z-50 h-16 px-6 flex items-center shadow-sm border-b border-blue-100">
+       <nav className="bg-sky-200 sticky top-0 z-50 h-16 px-6 flex items-center shadow-sm border-b border-blue-100">
         
         <div className="flex items-center justify-between w-full">
           
